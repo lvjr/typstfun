@@ -1,0 +1,3 @@
+Package: List of equivalent Typst function names for LaTeX commands
+Author:  Jianrui Lyu <tolvjr@163.com>
+License: The LaTeX Project Public License 1.3c

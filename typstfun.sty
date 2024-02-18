@@ -1,0 +1,181 @@
+% -*- coding: utf-8 -*-
+% ----------------------------------------------------------------------------
+% Author:  Jianrui Lyu <tolvjr@163.com>
+% License: The LaTeX Project Public License 1.3c
+% ----------------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{typstfun}[2024-02-18 v2024@ Print equivalent Typst function names]
+
+\RequirePackage{functional}
+\IgnoreSpacesOn
+
+\propConstFromKeyval\c@typstfun@text@env@prop{
+   enumerate = enum
+  ,itemize = list
+  ,tabular = table
+}
+
+\propConstFromKeyval\c@typstfun@text@cmd@prop{
+   chapter = heading
+  ,part = heading
+  ,section = heading
+  ,subsection = heading
+  ,subsubsection = heading
+}
+
+\propConstFromKeyval\c@typstfun@math@cmd@prop{
+  ,frac = frac
+  ,mathbb = bb
+  ,mathcal = cal
+  ,sqrt = {sqrt,root}
+}
+
+\propConstFromKeyval\c@typstfun@math@sym@prop{
+   Delta = Delta
+  ,Gamma = Gamma
+  ,Lambda = Lambda
+  ,Omega = Omega
+  ,Phi = Phi
+  ,Pi = Pi
+  ,Psi = Psi
+  ,Sigma = Sigma
+  ,Theta = Theta
+  ,aleph = alef
+  ,alpha = alpha
+  ,beta = beta
+  ,cap = sect
+  ,chi = chi
+  ,cup = union
+  ,delta = delta
+  ,emptyset = nothing
+  ,epsilon = epsilon.alt
+  ,eta = eta
+  ,exists = exists
+  ,forall = forall
+  ,gamma = gamma
+  ,in = in
+  ,int = integral
+  ,iota = iota
+  ,kappa = kappa
+  ,lambda = lambda
+  ,models = models
+  ,mu = mu
+  ,neg = not
+  ,notin = in.not
+  ,nu = nu
+  ,omega = omega
+ %,omicron = omicron
+  ,phi = phi.alt
+  ,pi = pi
+  ,psi = psi
+  ,rho = rho
+  ,setminus = without
+  ,sigma = sigma
+  ,subset = subset
+  ,subseteq = subset.eq
+  ,supset = supset
+  ,supseteq = supset.eq
+  ,tau = tau
+  ,theta = theta
+  ,upsilon = upsilon
+  ,varepsilon = epsilon
+  ,varphi = phi
+  ,varpi = pi.alt
+  ,varrho = rho.alt
+  ,varsigma = sigma.alt
+  ,vartheta = theta.alt
+  ,vdash = tack.r
+  ,vee = or
+  ,wedge = and
+  ,xi = xi
+  ,zeta = zeta
+}
+
+\prgNewFunction\typstfun@init{m}{
+  \propVarMapInline{\expName{c@typstfun@#1@prop}}{
+    \tlSet{\expName{l@typstfun@name@##1@tl}}{##2}
+  }
+}
+
+\typstfun@init{text@env}
+\typstfun@init{text@cmd}
+\typstfun@init{math@cmd}
+\typstfun@init{math@sym}
+
+\NewDocumentCommand\typstfun{m}{
+  \texttt{\expName{l@typstfun@name@#1@tl}}
+}
+
+\tlNew\l@typstfun@latex@type@tl
+\tlSet\l@typstfun@latex@type@tl{Command}
+
+\tlConst\c@typstfun@longtable@begin@tl{
+  \begingroup
+  \setlength\tabcolsep{0pt}
+  \begin{longtable}{*{4}{p{0.25\linewidth}}}
+  \toprule
+  LaTeX~\l@typstfun@latex@type@tl & Typst~Function &
+  LaTeX~\l@typstfun@latex@type@tl & Typst~Function \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+}
+
+\tlConst\c@typstfun@longtable@end@tl{
+  \end{longtable}
+  \endgroup
+}
+
+\prgNewFunction\typstfunPrintTable{Mmm}{
+  \tlClear\lTmpaTl
+  \intZero\lTmpaInt
+  \propVarMapInline{#1}{
+    \tlPutRight\lTmpaTl{#2&#3}
+    \intIncr\lTmpaInt
+    \intIfOddTF{\lTmpaInt}{
+      \tlPutRight\lTmpaTl{&}
+    }{
+      \tlPutRight\lTmpaTl{\\}
+    }
+  }
+  \c@typstfun@longtable@begin@tl
+  \lTmpaTl
+  \c@typstfun@longtable@end@tl
+}
+
+\prgNewFunction\typstfunPrintEnv{m}{
+  \tlSet\l@typstfun@latex@type@tl{Environment}
+  \typstfunPrintTable{
+    \expName{c@typstfun@#1@env@prop}
+  }{
+    \texttt{##1}
+  }{
+    \texttt{##2}
+  }
+}
+
+\prgNewFunction\typstfunPrintCmd{m}{
+  \tlSet\l@typstfun@latex@type@tl{Command}
+  \typstfunPrintTable{
+    \expName{c@typstfun@#1@cmd@prop}
+  }{
+    \ExpandArgs{c}\fakeverb{##1}
+  }{
+    \texttt{##2}
+  }
+}
+
+\prgNewFunction\typstfunPrintSym{m}{
+  \tlSet\l@typstfun@latex@type@tl{Symbol}
+  \typstfunPrintTable{
+    \expName{c@typstfun@#1@sym@prop}
+  }{
+    \ExpandArgs{c}\fakeverb{##1}\hfill$\UseName{##1}$\hspace*{1em}
+  }{
+    \texttt{##2}
+  }
+}
+
+\IgnoreSpacesOff

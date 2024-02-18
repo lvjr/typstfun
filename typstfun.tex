@@ -1,0 +1,48 @@
+%  -*- coding: utf-8 -*-
+\documentclass[oneside,12pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+
+\newcommand*{\myversion}{2024@}
+\newcommand*{\mydate}{Version \myversion\ (\the\year-\mylpad\month-\mylpad\day)}
+\newcommand*{\mylpad}[1]{\ifnum#1<10 0\the#1\else\the#1\fi}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt plus 1pt minus 1pt}
+
+\usepackage{typstfun}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{ninecolors}
+\usepackage{codehigh}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=blue3,
+  linkcolor=green3,
+}
+
+\begin{document}
+
+\title{\textsf{\color{green3}Equivalent Typst function names of LaTeX commands}}
+\author{Jianrui Lyu (tolvjr@163.com)}
+\date{\mydate}
+\maketitle
+
+\section{Text Environments}
+
+\typstfunPrintEnv{text}
+
+\section{Text Commands}
+
+\typstfunPrintCmd{text}
+
+\section{Math Commands}
+
+\typstfunPrintCmd{math}
+
+\section{Math Symbols}
+
+\typstfunPrintSym{math}
+
+\end{document}
